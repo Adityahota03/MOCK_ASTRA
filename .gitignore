@@ -1,0 +1,8 @@
+# Local runtime configuration and generated Python files
+backend/.env
+backend/__pycache__/
+backend/**/__pycache__/
+*.py[cod]
+
+# Local development database
+backend/db.sqlite3
