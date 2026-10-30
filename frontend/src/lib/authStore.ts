@@ -1,7 +1,6 @@
 import { create } from 'zustand';
-import axios from 'axios';
 import type { User } from '../types';
-import { accountsApi } from './api';
+import { accountsApi, api } from './api';
 
 interface AuthState {
   user: User | null;
@@ -22,7 +21,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   isLoading: true,
 
   login: async (email, password) => {
-    const res = await axios.post('/api/auth/login/', { email, password });
+    const res = await api.post('/auth/login/', { email, password });
     const { user, access, refresh } = res.data;
     localStorage.setItem('access_token', access);
     localStorage.setItem('refresh_token', refresh);
@@ -30,7 +29,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   register: async (email, password, fullName) => {
-    const res = await axios.post('/api/auth/register/', {
+    const res = await api.post('/auth/register/', {
       email,
       password,
       full_name: fullName,

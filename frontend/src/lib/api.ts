@@ -19,8 +19,11 @@ import type {
   AdminTest,
 } from '../types';
 
+const backendUrl = import.meta.env.VITE_API_URL?.replace(/\/$/, '');
+const apiBaseUrl = backendUrl ? `${backendUrl}/api` : '/api';
+
 export const api = axios.create({
-  baseURL: '/api',
+  baseURL: apiBaseUrl,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -45,7 +48,7 @@ api.interceptors.response.use(
       const refreshToken = localStorage.getItem('refresh_token');
       if (refreshToken) {
         try {
-          const res = await axios.post('/api/auth/refresh/', { refresh: refreshToken });
+          const res = await axios.post(`${apiBaseUrl}/auth/refresh/`, { refresh: refreshToken });
           const newAccess = res.data.access;
           localStorage.setItem('access_token', newAccess);
           originalRequest.headers.Authorization = `Bearer ${newAccess}`;
