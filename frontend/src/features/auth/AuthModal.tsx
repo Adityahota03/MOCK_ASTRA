@@ -3,6 +3,25 @@ import { useAuthStore } from '../../lib/authStore';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { Sparkles, Mail, Lock, User, ArrowRight, ShieldCheck } from 'lucide-react';
 
+const getErrorMessage = (value: unknown): string => {
+  if (typeof value === 'string') return value;
+
+  if (Array.isArray(value)) {
+    return value.length > 0
+      ? getErrorMessage(value[0])
+      : 'Authentication failed. Please check your inputs.';
+  }
+
+  if (value && typeof value === 'object') {
+    const firstValue = Object.values(value as Record<string, unknown>)[0];
+    return firstValue === undefined
+      ? 'Authentication failed. Please check your inputs.'
+      : getErrorMessage(firstValue);
+  }
+
+  return 'Authentication failed. Please check your inputs.';
+};
+
 export const AuthModal: React.FC = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState('');
@@ -25,10 +44,7 @@ export const AuthModal: React.FC = () => {
         await login(email, password);
       }
     } catch (err: any) {
-      const msg = err.response?.data?.detail ||
-        (err.response?.data ? Object.values(err.response.data)[0] : null) ||
-        'Authentication failed. Please check your inputs.';
-      setError(Array.isArray(msg) ? msg[0] : String(msg));
+      setError(getErrorMessage(err.response?.data?.detail ?? err.response?.data));
     } finally {
       setLoading(false);
     }
