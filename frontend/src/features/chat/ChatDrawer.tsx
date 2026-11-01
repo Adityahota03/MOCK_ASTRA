@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 import { chatApi } from '../../lib/api';
 import type { ChatConversation, ChatMessage } from '../../types';
 import { GlassCard } from '../../components/ui/GlassCard';
@@ -16,6 +21,15 @@ interface ChatDrawerProps {
   onClose?: () => void;
 }
 
+const formatTutorContent = (content: string) =>
+  // The tutor commonly returns LaTeX using \(...\) and \[...\]. Convert it
+  // to the dollar delimiters understood by remark-math before rendering.
+  content
+    .replace(/\\\[/g, '$$')
+    .replace(/\\\]/g, '$$')
+    .replace(/\\\(/g, '$')
+    .replace(/\\\)/g, '$');
+
 export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   initialDoubt,
   onClose,
@@ -26,7 +40,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   const [inputContent, setInputContent] = useState<string>(initialDoubt || '');
   const [isSending, setIsSending] = useState<boolean>(false);
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Load conversations
   useEffect(() => {
@@ -66,7 +80,15 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
 
   const scrollToBottom = () => {
     setTimeout(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      const container = messagesContainerRef.current;
+      if (!container) return;
+
+      // Keep auto-scroll inside the transcript. scrollIntoView also scrolls the
+      // page on mobile, which made the tutor jump while a user was reading.
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth',
+      });
     }, 100);
   };
 
@@ -142,7 +164,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       {/* 2-Column Chat Layout: Conversations Sidebar (4 cols) + Chat Window (8 cols) */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 h-auto md:h-[640px]">
         {/* Conversations Sidebar */}
-        <div className="md:col-span-4 h-[184px] md:h-full">
+        <div className="md:col-span-4 h-[184px] md:h-full min-h-0">
           <GlassCard className="p-4 h-full flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-3 px-1">
@@ -158,7 +180,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
               </div>
 
               {/* Sessions List */}
-              <div className="flex md:block gap-1.5 overflow-x-auto md:overflow-y-auto max-h-[112px] md:max-h-[520px] pr-1 pb-1">
+              <div className="flex md:block gap-1.5 overflow-x-auto overscroll-x-contain md:overflow-y-auto md:overscroll-contain max-h-[112px] md:max-h-[520px] pr-1 pb-1 touch-pan-x md:touch-pan-y">
                 {conversations.map((c) => {
                   const isActive = activeConvId === c.id;
                   return (
@@ -187,10 +209,13 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
         </div>
 
         {/* Chat Messages & Input Panel */}
-        <div className="md:col-span-8 h-[520px] md:h-full">
-          <GlassCard elevated className="p-4 sm:p-6 h-full flex flex-col justify-between border-purple-500/20">
+        <div className="md:col-span-8 h-[520px] md:h-full min-h-0">
+          <GlassCard elevated className="p-4 sm:p-6 h-full min-h-0 flex flex-col justify-between border-purple-500/20">
             {/* Messages Scroll Area */}
-            <div className="flex-1 overflow-y-auto pr-2 space-y-4 mb-4">
+            <div
+              ref={messagesContainerRef}
+              className="flex-1 min-h-0 overflow-y-auto overscroll-contain touch-pan-y pr-2 space-y-4 mb-4"
+            >
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400">
                   <div className="w-14 h-14 rounded-2xl bg-purple-600/15 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-3">
@@ -216,13 +241,38 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                       )}
 
                       <div
-                        className={`max-w-[80%] p-4 rounded-2xl text-xs md:text-sm leading-relaxed ${
+                        className={`max-w-[80%] min-w-0 p-4 rounded-2xl text-xs md:text-sm leading-relaxed ${
                           isUser
                             ? 'bg-indigo-600 text-white rounded-tr-none shadow-md'
-                            : 'glass-panel border-white/10 text-slate-200 rounded-tl-none whitespace-pre-line'
+                            : 'glass-panel border-white/10 text-slate-200 rounded-tl-none'
                         }`}
                       >
-                        {m.content}
+                        {isUser ? (
+                          m.content
+                        ) : (
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm, remarkMath]}
+                            rehypePlugins={[rehypeKatex]}
+                            components={{
+                              h1: ({ children }) => <h1 className="text-base md:text-lg font-extrabold text-white mt-1 mb-3">{children}</h1>,
+                              h2: ({ children }) => <h2 className="text-sm md:text-base font-extrabold text-white mt-4 mb-2">{children}</h2>,
+                              h3: ({ children }) => <h3 className="text-sm font-bold text-purple-300 mt-3 mb-1.5">{children}</h3>,
+                              p: ({ children }) => <p className="mb-3 last:mb-0">{children}</p>,
+                              strong: ({ children }) => <strong className="font-bold text-white">{children}</strong>,
+                              ul: ({ children }) => <ul className="list-disc space-y-1.5 pl-5 mb-3 marker:text-purple-400">{children}</ul>,
+                              ol: ({ children }) => <ol className="list-decimal space-y-2 pl-5 mb-3 marker:font-bold marker:text-purple-300">{children}</ol>,
+                              li: ({ children }) => <li className="pl-0.5">{children}</li>,
+                              hr: () => <hr className="my-4 border-white/15" />,
+                              blockquote: ({ children }) => <blockquote className="my-3 border-l-2 border-purple-400/70 pl-3 text-slate-300">{children}</blockquote>,
+                              code: ({ children, className }) => className
+                                ? <code className="block my-3 overflow-x-auto rounded-lg bg-black/25 p-3 font-mono text-[.78em] text-cyan-200">{children}</code>
+                                : <code className="rounded bg-black/25 px-1.5 py-0.5 font-mono text-[.85em] text-cyan-200">{children}</code>,
+                              a: ({ children, href }) => <a href={href} target="_blank" rel="noreferrer" className="font-semibold text-cyan-300 underline underline-offset-2">{children}</a>,
+                            }}
+                          >
+                            {formatTutorContent(m.content)}
+                          </ReactMarkdown>
+                        )}
                       </div>
 
                       {isUser && (
@@ -248,8 +298,6 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                   </div>
                 </div>
               )}
-
-              <div ref={messagesEndRef} />
             </div>
 
             {/* Input Form */}
