@@ -214,7 +214,12 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
             {/* Messages Scroll Area */}
             <div
               ref={messagesContainerRef}
-              className="flex-1 min-h-0 overflow-y-auto overscroll-contain touch-pan-y pr-2 space-y-4 mb-4"
+              className="chat-transcript flex-1 min-h-0 pr-2 space-y-4 mb-4"
+              role="log"
+              aria-live="polite"
+              aria-relevant="additions text"
+              aria-label="AI Tutor conversation"
+              tabIndex={0}
             >
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400">

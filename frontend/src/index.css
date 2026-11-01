@@ -106,6 +106,16 @@ button:not(:disabled), [role="button"] {
   padding: .35rem 0;
 }
 
+/* The tutor owns its vertical scroll, so wheel/touch gestures do not leak to
+   the page or get trapped by the fixed mobile navigation. */
+.chat-transcript {
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+
 @media (max-width: 767px) {
   :root {
     --bg-base: #090d1d;

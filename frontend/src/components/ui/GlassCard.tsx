@@ -70,7 +70,13 @@ export const GlassCard: React.FC<GlassCardProps> = ({
           }}
         />
       )}
-      <div className="relative z-10">{children}</div>
+      {/*
+        Keep the content layer as tall as the card. Components such as the AI
+        tutor use a flex column with an internal scroll region; without this
+        height, that region grows with its messages instead of becoming
+        scrollable.
+      */}
+      <div className="relative z-10 h-full">{children}</div>
     </div>
   );
 };
