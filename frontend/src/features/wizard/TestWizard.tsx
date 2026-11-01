@@ -148,11 +148,11 @@ export const TestWizard: React.FC<TestWizardProps> = ({
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 pb-32">
+    <div className="mobile-page mobile-enter max-w-4xl mx-auto px-4 py-8 pb-32">
       {/* Wizard Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-start sm:items-center justify-between gap-3 mb-8">
         <div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
             <Sparkles className="w-7 h-7 text-indigo-400" />
             Create AI Mock Test
           </h1>

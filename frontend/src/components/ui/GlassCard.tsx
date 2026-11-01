@@ -58,7 +58,7 @@ export const GlassCard: React.FC<GlassCardProps> = ({
         transform: tilt ? transform : undefined,
         transition: tilt && !isHovered ? 'transform 0.4s ease-out' : undefined,
       }}
-      className={`relative rounded-2xl overflow-hidden transition-all duration-300 ${baseStyle} ${className}`}
+      className={`relative rounded-2xl overflow-hidden transition-all duration-300 motion-reduce:transition-none ${baseStyle} ${className}`}
       {...props}
     >
       {/* Dynamic cursor light reflection */}

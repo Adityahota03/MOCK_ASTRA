@@ -53,7 +53,7 @@ export const ProfileModal: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 pb-32">
+    <div className="mobile-page mobile-enter max-w-4xl mx-auto px-4 py-8 pb-32">
       <div className="mb-8">
         <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
           <User className="w-7 h-7 text-indigo-400" />

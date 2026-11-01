@@ -82,7 +82,7 @@ export const TestResultView: React.FC<TestResultViewProps> = ({
   });
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 pb-32">
+    <div className="mobile-page mobile-enter max-w-5xl mx-auto px-4 py-8 pb-32">
       {/* Top Hero: Score & Key Metrics */}
       <GlassCard elevated className="p-8 mb-8 border-indigo-500/30 relative overflow-hidden">
         <div className="ambient-bg" />
@@ -103,7 +103,7 @@ export const TestResultView: React.FC<TestResultViewProps> = ({
           </div>
 
           {/* Action buttons */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
             <button
               onClick={() => onRetake(result.subject.id, result.topic_name)}
               className="px-4 py-2.5 rounded-xl glass-button text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-[0_0_16px_rgba(99,102,241,0.35)]"

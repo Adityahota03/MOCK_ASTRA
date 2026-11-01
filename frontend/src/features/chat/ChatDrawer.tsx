@@ -113,14 +113,14 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 pb-32">
+    <div className="mobile-page mobile-enter max-w-6xl mx-auto px-4 py-8 pb-32">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-start sm:items-center justify-between gap-3 mb-6">
         <div>
           <span className="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/15 border border-purple-500/30 text-purple-300">
             Astra AI Tutor
           </span>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight mt-1.5 flex items-center gap-2.5">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1.5 flex items-center gap-2.5">
             <Bot className="w-7 h-7 text-purple-400" />
             AI Doubt Solving Tutor
           </h1>
@@ -140,9 +140,9 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       </div>
 
       {/* 2-Column Chat Layout: Conversations Sidebar (4 cols) + Chat Window (8 cols) */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-[640px]">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 h-auto md:h-[640px]">
         {/* Conversations Sidebar */}
-        <div className="md:col-span-4 h-full">
+        <div className="md:col-span-4 h-[184px] md:h-full">
           <GlassCard className="p-4 h-full flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-3 px-1">
@@ -158,14 +158,14 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
               </div>
 
               {/* Sessions List */}
-              <div className="space-y-1.5 max-h-[520px] overflow-y-auto pr-1">
+              <div className="flex md:block gap-1.5 overflow-x-auto md:overflow-y-auto max-h-[112px] md:max-h-[520px] pr-1 pb-1">
                 {conversations.map((c) => {
                   const isActive = activeConvId === c.id;
                   return (
                     <button
                       key={c.id}
                       onClick={() => setActiveConvId(c.id)}
-                      className={`w-full text-left p-3 rounded-xl border transition-all cursor-pointer flex items-center gap-2.5 ${
+                      className={`min-w-[180px] md:w-full text-left p-3 rounded-xl border transition-all cursor-pointer flex items-center gap-2.5 ${
                         isActive
                           ? 'glass-panel-elevated border-purple-500/50 bg-purple-950/30 text-white'
                           : 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-white'
@@ -187,8 +187,8 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
         </div>
 
         {/* Chat Messages & Input Panel */}
-        <div className="md:col-span-8 h-full">
-          <GlassCard elevated className="p-6 h-full flex flex-col justify-between border-purple-500/20">
+        <div className="md:col-span-8 h-[520px] md:h-full">
+          <GlassCard elevated className="p-4 sm:p-6 h-full flex flex-col justify-between border-purple-500/20">
             {/* Messages Scroll Area */}
             <div className="flex-1 overflow-y-auto pr-2 space-y-4 mb-4">
               {messages.length === 0 ? (

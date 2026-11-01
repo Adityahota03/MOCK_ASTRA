@@ -28,7 +28,7 @@ export function App() {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#060913] flex items-center justify-center">
+      <div className="app-shell min-h-screen bg-[#060913] flex items-center justify-center">
         <div className="ambient-bg" />
         <div className="text-center relative z-10">
           <div className="w-12 h-12 border-3 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin mx-auto mb-4" />
@@ -41,7 +41,7 @@ export function App() {
   // If not authenticated, show spatial AuthModal
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#060913]">
+      <div className="app-shell min-h-screen bg-[#060913]">
         <div className="ambient-bg" />
         <AuthModal />
       </div>
@@ -56,7 +56,7 @@ export function App() {
   // Active Test taking mode (Dock is hidden to ensure full exam focus)
   if (activeTestSessionId) {
     return (
-      <div className="min-h-screen bg-[#060913]">
+      <div className="app-shell min-h-screen bg-[#060913]">
         <div className="ambient-bg" />
         <ActiveTestView
           sessionId={activeTestSessionId}
@@ -76,7 +76,7 @@ export function App() {
   // Test Results View mode
   if (viewResultSessionId) {
     return (
-      <div className="min-h-screen bg-[#060913]">
+      <div className="app-shell min-h-screen bg-[#060913]">
         <div className="ambient-bg" />
         <TestResultView
           sessionId={viewResultSessionId}
@@ -110,11 +110,11 @@ export function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#060913] text-slate-100 flex flex-col justify-between">
+    <div className="app-shell min-h-screen bg-[#060913] text-slate-100 flex flex-col justify-between">
       <div className="ambient-bg" />
 
       {/* Top Header */}
-      <header className="sticky top-0 z-30 px-6 py-4 backdrop-blur-xl bg-[#060913]/70 border-b border-white/5 flex items-center justify-between">
+      <header className="app-header sticky top-0 z-30 px-4 sm:px-6 py-3 sm:py-4 backdrop-blur-xl bg-[#060913]/70 border-b border-white/5 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-xl bg-indigo-600/20 border border-indigo-400/30 text-indigo-400 shadow-[0_0_16px_rgba(99,102,241,0.3)]">
             <Sparkles className="w-5 h-5" />
@@ -123,11 +123,11 @@ export function App() {
             <span className="font-extrabold text-base tracking-tight text-white flex items-center gap-1.5">
               ASTRA <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 font-bold border border-indigo-500/30">AI MOCK</span>
             </span>
-            <p className="text-[10px] text-slate-400 font-medium">Intelligent Examination Mastery</p>
+            <p className="app-tagline text-[10px] text-slate-400 font-medium">Intelligent Examination Mastery</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           {/* Admin Panel Button - only for staff */}
           {user?.is_staff && (
             <button
@@ -141,13 +141,16 @@ export function App() {
 
           <button
             onClick={() => setActiveTab('tutor')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 text-xs font-semibold border border-purple-500/25 transition-all cursor-pointer shadow-sm"
+            aria-label="Ask AI Tutor"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 text-xs font-semibold border border-purple-500/25 transition-all cursor-pointer shadow-sm"
           >
             <Bot className="w-3.5 h-3.5 text-purple-400" />
             <span className="hidden sm:inline">Ask AI Tutor</span>
           </button>
 
-          <div
+          <button
+            type="button"
+            aria-label="Open profile"
             onClick={() => setActiveTab('profile')}
             className="flex items-center gap-2 pl-3 py-1 pr-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 cursor-pointer transition-colors"
           >
@@ -162,7 +165,7 @@ export function App() {
             <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-indigo-600 to-purple-600 text-white font-bold text-xs flex items-center justify-center shadow-md">
               {(user?.full_name || user?.email || 'A')[0].toUpperCase()}
             </div>
-          </div>
+          </button>
         </div>
       </header>
 

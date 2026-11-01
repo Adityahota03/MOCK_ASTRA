@@ -75,7 +75,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const hasTests = summary && summary.total_tests > 0;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 pb-32">
+    <div className="mobile-page mobile-enter max-w-7xl mx-auto px-4 py-8 pb-32">
       {/* Welcome Banner */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
         <div>
@@ -92,7 +92,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
         <button
           onClick={() => onStartNewTest()}
-          className="px-6 py-3.5 rounded-xl glass-button text-white font-bold text-sm flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(99,102,241,0.45)] cursor-pointer self-start md:self-auto"
+          className="w-full sm:w-auto px-6 py-3.5 rounded-xl glass-button text-white font-bold text-sm flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(99,102,241,0.45)] cursor-pointer self-start md:self-auto"
         >
           <Sparkles className="w-4 h-4" />
           <span>Launch New Mock Test</span>

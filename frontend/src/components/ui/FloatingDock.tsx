@@ -34,7 +34,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
   return (
     <nav
       aria-label="Main Navigation"
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 px-3 py-2 rounded-2xl glass-dock flex items-center gap-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-white/10"
+      className="safe-dock fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 px-2 py-2 rounded-2xl glass-dock flex items-center gap-0.5 sm:gap-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-white/10 max-w-[calc(100vw-1.25rem)]"
       title={userName ? `Logged in as ${userName}` : undefined}
     >
       {navItems.map((item) => {
@@ -43,7 +43,8 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
           <button
             key={item.id}
             onClick={() => onSelectTab(item.id)}
-            className={`group relative flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer ${
+            aria-label={item.label}
+            className={`group relative flex items-center justify-center gap-2 px-2.5 sm:px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 cursor-pointer ${
               isActive
                 ? 'bg-white/15 text-white shadow-[0_0_20px_rgba(99,102,241,0.35)] border border-white/20'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
@@ -57,13 +58,13 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
         );
       })}
 
-      <div className="w-px h-6 bg-white/10 mx-1" />
+      <div className="w-px h-6 bg-white/10 mx-0.5 sm:mx-1" />
 
       {/* Logout button */}
       <button
         onClick={onLogout}
         title="Sign Out"
-        className="flex items-center gap-1 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+        className="flex items-center gap-1 px-2.5 sm:px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
       >
         <LogOut className="w-4 h-4" />
         <span className="hidden lg:inline text-xs">Exit</span>

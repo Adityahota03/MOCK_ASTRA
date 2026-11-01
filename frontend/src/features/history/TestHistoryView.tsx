@@ -36,7 +36,7 @@ export const TestHistoryView: React.FC<TestHistoryViewProps> = ({
   );
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 pb-32">
+    <div className="mobile-page mobile-enter max-w-5xl mx-auto px-4 py-8 pb-32">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
@@ -91,7 +91,7 @@ export const TestHistoryView: React.FC<TestHistoryViewProps> = ({
                 key={t.id}
                 tilt
                 onClick={() => onViewResult(t.id)}
-                className="p-5 flex items-center justify-between cursor-pointer hover:border-white/20 transition-all"
+                className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 cursor-pointer hover:border-white/20 transition-all"
               >
                 <div>
                   <div className="flex items-center gap-2 text-xs font-bold text-indigo-400 uppercase tracking-wider mb-1">
@@ -109,7 +109,7 @@ export const TestHistoryView: React.FC<TestHistoryViewProps> = ({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-6">
+                <div className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-6">
                   <div className="text-right">
                     <div className="text-base font-extrabold text-white">
                       {t.score} / {t.num_questions}

@@ -63,10 +63,10 @@ export const AuthModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xl">
+    <div className="auth-screen fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xl overflow-y-auto">
       <div className="ambient-bg" />
 
-      <GlassCard elevated className="w-full max-w-md p-8 relative border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.8)]">
+      <GlassCard elevated className="auth-card w-full max-w-md p-6 sm:p-8 relative border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.8)]">
         {/* Header */}
         <div className="text-center mb-6">
           <div className="inline-flex p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-3 shadow-[0_0_24px_rgba(99,102,241,0.3)]">

@@ -204,7 +204,7 @@ export const ActiveTestView: React.FC<ActiveTestViewProps> = ({
   const isFlagged = !!flaggedQuestions[currentQ.position];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 pb-28">
+    <div className="mobile-page mobile-enter max-w-7xl mx-auto px-4 py-6 pb-28">
       {/* Top Bar: Subject, Title, Timer, Autosave Status */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
@@ -222,7 +222,7 @@ export const ActiveTestView: React.FC<ActiveTestViewProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="w-full md:w-auto flex items-center justify-between md:justify-start gap-4">
           <TimerRing
             remainingSeconds={remainingSec}
             totalSeconds={session.duration_seconds}
